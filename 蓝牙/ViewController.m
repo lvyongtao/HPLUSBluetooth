@@ -695,19 +695,27 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
             //断开连接状态
         }
     };
-    
+    //附近的蓝牙设备
     [HPLUSManager ShareManager].HPLUSManagerDevicesBlock = ^(NSMutableArray *arr){
         self.devices = arr;
         NSLog(@"arr = %@",arr);
         [self.myTableView reloadData];
     };
-    
+    //实时运动数据
     [HPLUSManager ShareManager].HPLUSManagerRealDataBlock = ^(RealRunData *model){
         self.realLable.text = [NSString stringWithFormat:@"realStep = %@,realDistance = %@,realCalories =%@,staticCalories = %@,battery = %@,heartRate= %@",model.realStep,model.realDistance,model.realCalories,model.staticCalories,model.battery,model.heartRate];
     };
-    
+    //蓝牙状态的打印
     [HPLUSManager ShareManager].HPLUSManagerTitleBlock = ^(NSString *text){
         self.msgLable.text = text;
+    };
+    //历史的运动数据
+    [HPLUSManager ShareManager].HPLUSManagerRunDataBlock = ^(HPLUSRunData *model){
+        
+    };
+    //历史的睡眠数据
+    [HPLUSManager ShareManager].HPLUSManagerSleepDataBlock = ^(HPLUSleepData *model){
+        
     };
     
     

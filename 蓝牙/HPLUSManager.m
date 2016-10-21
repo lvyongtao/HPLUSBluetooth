@@ -690,7 +690,10 @@ static HPLUSManager *manager = nil;
             }
             NSLog(@"run value = %@",characteristic.value);
 
-            [HPLUSRunData initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:run[10] Low:run[9]],[self strtoulWithString:run[11]],[self strtoulWithString:run[12]]] Step:[self strtoulWithStringHigh:run[2] Low:run[1]] Distance:[self strtoulWithStringHigh:run[4] Low:run[3]] RunCalories:[self strtoulWithStringHigh:run[6] Low:run[5]] StaticCalories:[self strtoulWithStringHigh:run[8] Low:run[7]] RunTimes:[self strtoulWithStringHigh:run[14] Low:run[13]] MaxHeartRate:[self strtoulWithString:run[15]] MinHeartRate:[self strtoulWithString:run[16]]];
+          HPLUSRunData *model = [HPLUSRunData initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:run[10] Low:run[9]],[self strtoulWithString:run[11]],[self strtoulWithString:run[12]]] Step:[self strtoulWithStringHigh:run[2] Low:run[1]] Distance:[self strtoulWithStringHigh:run[4] Low:run[3]] RunCalories:[self strtoulWithStringHigh:run[6] Low:run[5]] StaticCalories:[self strtoulWithStringHigh:run[8] Low:run[7]] RunTimes:[self strtoulWithStringHigh:run[14] Low:run[13]] MaxHeartRate:[self strtoulWithString:run[15]] MinHeartRate:[self strtoulWithString:run[16]]];
+            if (self.HPLUSManagerRunDataBlock) {
+                self.HPLUSManagerRunDataBlock(model);
+            }
             
             //            NSLog(@"run = %@",run);
         }else if ([hexString isEqualToString:[self ToHex:(long long)HPLUSBluetoothSettingSleepData]]){
@@ -700,8 +703,12 @@ static HPLUSManager *manager = nil;
                 NSLog(@"同步数据解析不正确");
                 return;
             }
+            
             NSLog(@"sleep value = %@",characteristic.value);
-            [HPLUSleepData initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:sleep[2] Low:sleep[1]],[self strtoulWithString:sleep[3]],[self strtoulWithString:sleep[4]]] SleepDate:[self strtoulWithStringHigh:sleep[6] Low:sleep[5]] SecondSleepDate:[self strtoulWithStringHigh:sleep[8] Low:sleep[7]] DeepSleepDate:[self strtoulWithStringHigh:sleep[10] Low:sleep[9]] ShallowSleepDate:[self strtoulWithStringHigh:sleep[12] Low:sleep[11]] WakeUpTimes:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[14]],[self strtoulWithString:sleep[13]]] WakeUpDate:[self strtoulWithStringHigh:sleep[16] Low:sleep[15]] StartDate:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[17]],[self strtoulWithString:sleep[18]]]];
+          HPLUSleepData *model = [HPLUSleepData initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:sleep[2] Low:sleep[1]],[self strtoulWithString:sleep[3]],[self strtoulWithString:sleep[4]]] SleepDate:[self strtoulWithStringHigh:sleep[6] Low:sleep[5]] SecondSleepDate:[self strtoulWithStringHigh:sleep[8] Low:sleep[7]] DeepSleepDate:[self strtoulWithStringHigh:sleep[10] Low:sleep[9]] ShallowSleepDate:[self strtoulWithStringHigh:sleep[12] Low:sleep[11]] WakeUpTimes:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[14]],[self strtoulWithString:sleep[13]]] WakeUpDate:[self strtoulWithStringHigh:sleep[16] Low:sleep[15]] StartDate:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[17]],[self strtoulWithString:sleep[18]]]];
+            if (self.HPLUSManagerSleepDataBlock) {
+                self.HPLUSManagerSleepDataBlock(model);
+            }
             //            NSLog(@"sleep = %@",sleep);
         }else if ([hexString isEqualToString:[self ToHex:(long long)HPLUSBluetoothSettingRealTimeData]]){
             NSString *runnotifyStr = [self hexDatatoString:characteristic.value];

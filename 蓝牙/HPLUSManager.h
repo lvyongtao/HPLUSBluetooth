@@ -193,6 +193,8 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
  *
  */
 @property (copy, nonatomic) void(^HPLUSManagerRealDataBlock)(RealRunData *);
+@property (copy, nonatomic) void(^HPLUSManagerRunDataBlock)(HPLUSRunData *);
+@property (copy, nonatomic) void(^HPLUSManagerSleepDataBlock)(HPLUSleepData *);
 
 /*********手环最好佩戴在左手上面，1.5cm距离你的手腕处。确保接近于你的皮肤******************************/
 //蓝牙状态的字符串
