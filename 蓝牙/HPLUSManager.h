@@ -39,21 +39,21 @@
 
 @interface HPLUSRunData : NSObject
 
-@property (copy, nonatomic) NSString *dateTime;
+@property (copy, nonatomic) NSString *dateTime;//时间
 
-@property (copy, nonatomic) NSString *step;
+@property (copy, nonatomic) NSString *step;//步数
 
-@property (copy, nonatomic) NSString *distance;
+@property (copy, nonatomic) NSString *distance;//里程(10m)
 
-@property (copy, nonatomic) NSString *runCalories;
+@property (copy, nonatomic) NSString *runCalories;//运动消耗卡路里(cal)
 
-@property (copy, nonatomic) NSString *staticCalories;
+@property (copy, nonatomic) NSString *staticCalories;//静止消耗卡路里(cal)
 
-@property (copy, nonatomic) NSString *runTimes;
+@property (copy, nonatomic) NSString *runTimes;//运动时间(minute)
 
-@property (copy, nonatomic) NSString *maxHeartRate;
+@property (copy, nonatomic) NSString *maxHeartRate;//心率最大值（次／分钟）
 
-@property (copy, nonatomic) NSString *minHeartRate;
+@property (copy, nonatomic) NSString *minHeartRate;//心率最小值（次／分钟）
 
 
 - (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate;
@@ -64,21 +64,21 @@
 
 @interface HPLUSleepData : NSObject
 
-@property (copy, nonatomic) NSString *dateTime;
+@property (copy, nonatomic) NSString *dateTime;//时间
 
-@property (copy, nonatomic) NSString *sleepDate;
+@property (copy, nonatomic) NSString *sleepDate;//入睡时间
 
-@property (copy, nonatomic) NSString *secondSleepDate;
+@property (copy, nonatomic) NSString *secondSleepDate;//第二阶段时间
 
-@property (copy, nonatomic) NSString *deepSleepDate;
+@property (copy, nonatomic) NSString *deepSleepDate;//深度睡眠时间
 
-@property (copy, nonatomic) NSString *shallowSleepDate;
+@property (copy, nonatomic) NSString *shallowSleepDate;//浅睡眠时间
 
-@property (copy, nonatomic) NSString *wakeUpTimes;
+@property (copy, nonatomic) NSString *wakeUpTimes;//中途醒时间
 
-@property (copy, nonatomic) NSString *wakeUpDate;
+@property (copy, nonatomic) NSString *wakeUpDate;//中途醒次数
 
-@property (copy, nonatomic) NSString *startDate;
+@property (copy, nonatomic) NSString *startDate;//开始睡眠时间
 
 - (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate;
 + (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate;
@@ -88,17 +88,17 @@
 
 @interface RealRunData : NSObject
 
-@property (copy, nonatomic) NSString *realStep;
+@property (copy, nonatomic) NSString *realStep;//当前步数
 
-@property (copy, nonatomic) NSString *realDistance;
+@property (copy, nonatomic) NSString *realDistance;//当前运动里程
 
-@property (copy, nonatomic) NSString *realCalories;
+@property (copy, nonatomic) NSString *realCalories;//当前消耗卡路里
 
-@property (copy, nonatomic) NSString *staticCalories;
+@property (copy, nonatomic) NSString *staticCalories;//静止消耗卡路里
 
-@property (copy, nonatomic) NSString *battery;
+@property (copy, nonatomic) NSString *battery;//电池百分比
 
-@property (copy, nonatomic) NSString *heartRate;
+@property (copy, nonatomic) NSString *heartRate;//心率 [255 0  表示无效数据（次／分钟）]
 
 - (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate;
 
@@ -166,18 +166,6 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
 
 
 @interface HPLUSManager : NSObject
-
-+ (HPLUSManager *)ShareManager;
-/*!
- *  @brief  初始化蓝牙管理中心
- *
- */
-- (void)initCentralManager;
-/*!
- *  @brief  断开蓝牙服务
- *
- */
-- (void)disconnectPeripheral;
 /*!
  *  @brief  返回连接设备的name
  *
@@ -196,14 +184,35 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
 @property (copy, nonatomic) void(^HPLUSManagerRunDataBlock)(HPLUSRunData *);
 @property (copy, nonatomic) void(^HPLUSManagerSleepDataBlock)(HPLUSleepData *);
 
-/*********手环最好佩戴在左手上面，1.5cm距离你的手腕处。确保接近于你的皮肤******************************/
-//蓝牙状态的字符串
 @property (readwrite,copy, nonatomic) NSString *title;
 
 @property (readwrite,strong, nonatomic) NSMutableArray *devices;
 
-- (void)connectWithPeripheral:(CBPeripheral *)peripheral;
 
++ (HPLUSManager *)ShareManager;
+/*!
+ *  @brief  初始化蓝牙管理中心
+ *
+ */
+- (void)initCentralManager;
+/*!
+ *  @brief  断开蓝牙服务
+ *
+ */
+- (void)disconnectPeripheral;
+
+
+/*********手环最好佩戴在左手上面，1.5cm距离你的手腕处。确保接近于你的皮肤******************************/
+//蓝牙状态的字符串
+/*!
+ *  @brief  连接外设
+ *
+ */
+- (void)connectWithPeripheral:(CBPeripheral *)peripheral;
+/*!
+ *  @brief  取消连接外设
+ *
+ */
 - (void)cancleConnectWithPeripheral:(CBPeripheral *)peripheral;
 /*!
  *  @brief  同步日期和时间
