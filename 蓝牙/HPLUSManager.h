@@ -37,7 +37,7 @@
 
 
 
-@interface HPLUSRunData : NSObject
+@interface HPLUSRunDataModel : NSObject<NSCoding>
 
 @property (copy, nonatomic) NSString *dateTime;//时间
 
@@ -56,17 +56,17 @@
 @property (copy, nonatomic) NSString *minHeartRate;//心率最小值（次／分钟）
 
 
-- (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate;
-+ (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate;
+- (HPLUSRunDataModel *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate;
++ (HPLUSRunDataModel *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate;
 
 @end
 
 
-@interface HPLUSleepData : NSObject
+@interface HPLUSleepDataModel : NSObject<NSCoding>
 
 @property (copy, nonatomic) NSString *dateTime;//时间
 
-@property (copy, nonatomic) NSString *sleepDate;//入睡时间
+@property (copy, nonatomic) NSString *sleepDate;//睡眠时间
 
 @property (copy, nonatomic) NSString *secondSleepDate;//第二阶段时间
 
@@ -74,19 +74,19 @@
 
 @property (copy, nonatomic) NSString *shallowSleepDate;//浅睡眠时间
 
-@property (copy, nonatomic) NSString *wakeUpTimes;//中途醒时间
+@property (copy, nonatomic) NSString *wakeUpTimes;//中途醒时间 （分钟）
 
 @property (copy, nonatomic) NSString *wakeUpDate;//中途醒次数
 
 @property (copy, nonatomic) NSString *startDate;//开始睡眠时间
 
-- (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate;
-+ (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate;
+- (HPLUSleepDataModel *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate;
++ (HPLUSleepDataModel *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate;
 
 @end
 
 
-@interface RealRunData : NSObject
+@interface RealRunDataModel : NSObject
 
 @property (copy, nonatomic) NSString *realStep;//当前步数
 
@@ -100,9 +100,36 @@
 
 @property (copy, nonatomic) NSString *heartRate;//心率 [255 0  表示无效数据（次／分钟）]
 
-- (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate;
+- (RealRunDataModel *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate;
 
-+ (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate;
++ (RealRunDataModel *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate;
+
+@end
+
+
+
+@interface HPlusExerciseDataModel : NSObject<NSCoding>
+
+@property (copy, nonatomic) NSString *dates;//锻炼的日期
+
+@property (assign, nonatomic) NSInteger weeks;//锻炼的星期几
+
+@property (assign, nonatomic) NSInteger dataTypes;//锻炼的数据类型
+
+@property (copy, nonatomic) NSString *steps;//锻炼的步数
+
+@property (copy, nonatomic) NSString *distances;//锻炼的距离
+
+@property (copy, nonatomic) NSString *calories;//锻炼消耗的卡路里
+
+@property (assign, nonatomic) float circleTimes;//锻炼类型的圈数
+
+@property (copy, nonatomic) NSString *exerciseDurations;//锻炼的时长
+
+
+- (HPlusExerciseDataModel *)initWithDates:(NSString *)dates Weeks:(NSInteger )weeks DataTypes:(NSInteger )dataTypes Steps:(NSString *)steps Distances:(NSString *)distances Calories:(NSString *)calories CircleTimes:(float )circleTimes ExerciseDurations:(NSString *)exerciseDurations;
+
++ (HPlusExerciseDataModel *)initWithDates:(NSString *)dates Weeks:(NSInteger )weeks DataTypes:(NSInteger )dataTypes Steps:(NSString *)steps Distances:(NSString *)distances Calories:(NSString *)calories CircleTimes:(float )circleTimes ExerciseDurations:(NSString *)exerciseDurations;
 
 @end
 
@@ -122,6 +149,7 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothCommand){
     HPLUSBluetoothCommandVersion = 23,//版本号
     HPLUSBluetoothCommandRunData = 21,//运动数据
     HPLUSBluetoothCommandSleepData = 25,//睡眠数据
+    HPLUSBluetoothCommandExerciseData = 25,//锻炼数据
     /*心率监测*/
     HPLUSBluetoothCommandHearRate = 53,//心率监测
     HPLUSBluetoothCommandRealHearRate = 50,//实时心率监测
@@ -150,12 +178,13 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
     /*手环关机*/
     HPLUSBluetoothSettingPowerOff = 90,
     /*手环获取数据判别命令*/
-    HPLUSBluetoothSettingRealTimeData = 51,
-    HPLUSBluetoothSettingSleepData = 26,
-    HPLUSBluetoothSettingRunData = 54,
+    HPLUSBluetoothSettingRealTimeData = 51,//实时运动数据
+    HPLUSBluetoothSettingSleepData = 26,//睡眠数据
+    HPLUSBluetoothSettingRunData = 54,//历史运动数据
+    HPLUSBluetoothSettingExerciseData = 54,//锻炼数据
     /*手环短信，电话提醒命令*/
     HPLUSBluetoothSettingPhone = 170,
-    HPLUSBluetoothSettingMessage = 170,
+    HPLUSBluetoothSettingMessage = 170
     
 };
 #define SearchTimeOutInterval 60.f
@@ -164,25 +193,14 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
 //typedef void(^CBPeripheralBlock)(NSMutableArray *);
 
 
+typedef void(^HPLUSManagerTitleBlock)(NSString *title);
+typedef void(^HPLUSManagerDevicesBlock)(NSMutableArray *arr);
+typedef void(^HPLUSManagerRealDataBlock)(RealRunDataModel *model);
+typedef void(^HPLUSManagerRunDataBlock)(HPLUSRunDataModel *model);
+typedef void(^HPLUSManagerSleepDataBlock)(HPLUSleepDataModel *model);
+typedef void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *model);
 
 @interface HPLUSManager : NSObject
-/*!
- *  @brief  返回连接设备的name
- *
- */
-@property (copy, nonatomic) void(^HPLUSManagerTitleBlock)(NSString *);
-/*!
- *  @brief  返回CBPeripheral对象数组的长度
- *
- */
-@property (copy, nonatomic) void(^HPLUSManagerDevicesBlock)(NSMutableArray *);
-/*!
- *  @brief  返回实时数据的model
- *
- */
-@property (copy, nonatomic) void(^HPLUSManagerRealDataBlock)(RealRunData *);
-@property (copy, nonatomic) void(^HPLUSManagerRunDataBlock)(HPLUSRunData *);
-@property (copy, nonatomic) void(^HPLUSManagerSleepDataBlock)(HPLUSleepData *);
 
 @property (readwrite,copy, nonatomic) NSString *title;
 
@@ -326,21 +344,62 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
  *
  *  @return 手环的运动数据
  */
-- (HPLUSRunData *)getRunDataCommand;
+- (void )setRunDataCommand:(NSInteger ) runtype SleepDataCommand:(NSInteger )sleeptype ExerciseDataCommand:(NSInteger )exercisetype;
 
-/*!
- *  @brief  获取手环的睡眠数据
- *
- *  @param  Device will automatically monitoring sleeping quality from 21:00pm -- 9:00am
- *  @return 手环的睡眠数据
- */
-- (HPLUSleepData *)getSleepDataCommand;
+/*********获取手环数据的block方法******************************/
 
-/*!
- *  @brief  获取手环的运动实时数据
- *
- *  @return 手环的实时运动数据
- */
-- (RealRunData *)getRealRunDataCommand;
+- (void)GetHPLUSManagerTitle:(HPLUSManagerTitleBlock )stateTitle;//连接设备的name
+
+- (void)GetHPLUSManagerDevices:(HPLUSManagerDevicesBlock )devices;//扫描蓝牙的数量
+
+- (void)GetHPLUSManagerRealData:(HPLUSManagerRealDataBlock )realModel;//实时数据的model
+
+- (void)GetHPLUSManagerRunData:(HPLUSManagerRunDataBlock )runModel;//运动数据的model
+
+- (void)GetHPLUSManagerSleepData:(HPLUSManagerSleepDataBlock )sleepModel;//睡眠数据的model
+
+- (void)GetHPLUSManagerExerciseData:(HPLUSManagerExerciseDataBlock )exerciseModel;//锻炼数据的model
+
+
+///*!
+// *  @brief  返回连接设备的name
+// *
+// */
+//
+//@property (copy, nonatomic) void(^HPLUSManagerTitleBlock)(NSString *);
+///*!
+// *  @brief  返回CBPeripheral对象数组的长度
+// *
+// */
+//@property (copy, nonatomic) void(^HPLUSManagerDevicesBlock)(NSMutableArray *);
+///*!
+// *  @brief  返回实时数据的model
+// *
+// */
+//@property (copy, nonatomic) void(^HPLUSManagerRealDataBlock)(RealRunDataModel *);
+//
+//@property (copy, nonatomic) void(^HPLUSManagerRunDataBlock)(HPLUSRunDataModel *);
+//
+//@property (copy, nonatomic) void(^HPLUSManagerSleepDataBlock)(HPLUSleepDataModel *);
+//
+//@property (copy, nonatomic) void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *);
+
+//- (HPLUSRunDataModel *)getRunDataCommand;
+//
+///*!
+// *  @brief  获取手环的睡眠数据
+// *
+// *  @param  Device will automatically monitoring sleeping quality from 21:00pm -- 9:00am
+// *  @return 手环的睡眠数据
+// */
+//- (HPLUSRunDataModel *)getSleepDataCommand;
+//
+///*!
+// *  @brief  获取手环的运动实时数据
+// *
+// *  @return 手环的实时运动数据
+// */
+//- (HPLUSRunDataModel *)getRealRunDataCommand;
+
 
 @end

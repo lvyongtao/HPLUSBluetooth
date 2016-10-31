@@ -27,8 +27,8 @@
 
 @end
 
-@implementation HPLUSRunData
-- (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate{
+@implementation HPLUSRunDataModel
+- (HPLUSRunDataModel *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate{
     if (self = [super init]) {
         _dateTime = dateTime;
         _step = step;
@@ -38,21 +38,45 @@
         _runTimes = runTimes;
         _maxHeartRate = maxHeartRate;
         _minHeartRate = minHeartRate;
-        NSLog(@"dateTime = %@,step = %@,distance = %@,runCalories = %@,staticCalories = %@,runTimes = %@,maxHeartRate = %@,minHeartRate = %@",dateTime,step,distance,runCalories,staticCalories,runTimes,maxHeartRate,minHeartRate);
+//        NSLog(@"dateTime = %@,step = %@,distance = %@,runCalories = %@,staticCalories = %@,runTimes = %@,maxHeartRate = %@,minHeartRate = %@",dateTime,step,distance,runCalories,staticCalories,runTimes,maxHeartRate,minHeartRate);
     }
     return self;
 }
-+ (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate{
-    HPLUSRunData *model = [[HPLUSRunData alloc] initWithDateTime:dateTime Step:step Distance:distance RunCalories:runCalories StaticCalories:staticCalories RunTimes:runTimes MaxHeartRate:maxHeartRate MinHeartRate:minHeartRate];
++ (HPLUSRunDataModel *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate{
+    HPLUSRunDataModel *model = [[HPLUSRunDataModel alloc] initWithDateTime:dateTime Step:step Distance:distance RunCalories:runCalories StaticCalories:staticCalories RunTimes:runTimes MaxHeartRate:maxHeartRate MinHeartRate:minHeartRate];
     return model;
 }
-
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.dateTime forKey:@"dateTime"];
+    [aCoder encodeObject:self.step forKey:@"step"];
+    [aCoder encodeObject:self.distance forKey:@"distance"];
+    [aCoder encodeObject:self.runCalories forKey:@"runCalories"];
+    
+    [aCoder encodeObject:self.staticCalories forKey:@"staticCalories"];
+    [aCoder encodeObject:self.runTimes forKey:@"runTimes"];
+    [aCoder encodeObject:self.maxHeartRate forKey:@"maxHeartRate"];
+    [aCoder encodeObject:self.minHeartRate forKey:@"minHeartRate"];
+}
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super init]) {
+        self.dateTime = [aDecoder decodeObjectForKey:@"dateTime"];
+        self.step = [aDecoder decodeObjectForKey:@"step"];
+        self.distance = [aDecoder decodeObjectForKey:@"distance"];
+        self.runCalories = [aDecoder decodeObjectForKey:@"runCalories"];
+        self.staticCalories = [aDecoder decodeObjectForKey:@"staticCalories"];
+        
+        self.runTimes = [aDecoder decodeObjectForKey:@"runTimes"];
+        self.maxHeartRate = [aDecoder decodeObjectForKey:@"maxHeartRate"];
+        self.minHeartRate = [aDecoder decodeObjectForKey:@"minHeartRate"];
+    }
+    return self;
+}
 @end
 
 
-@implementation HPLUSleepData
+@implementation HPLUSleepDataModel
 
-- (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate{
+- (HPLUSleepDataModel *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate{
     if (self = [super init]) {
         _dateTime = dateTime;
         _sleepDate = sleepDate;
@@ -62,22 +86,46 @@
         _wakeUpTimes = wakeUpTimes;
         _wakeUpDate = wakeUpDate;
         _startDate = startDate;
-        NSLog(@"dateTime = %@,sleepDate = %@,secondSleepDate = %@,deepSleepDate = %@,shallowSleepDate = %@,wakeUpTimes = %@,wakeUpDate = %@,startDate = %@",dateTime,sleepDate,secondSleepDate,deepSleepDate,shallowSleepDate,wakeUpTimes,wakeUpDate,startDate);
+//        NSLog(@"dateTime = %@,sleepDate = %@,secondSleepDate = %@,deepSleepDate = %@,shallowSleepDate = %@,wakeUpTimes = %@,wakeUpDate = %@,startDate = %@",dateTime,sleepDate,secondSleepDate,deepSleepDate,shallowSleepDate,wakeUpTimes,wakeUpDate,startDate);
     }
     return self;
 }
 
-+ (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate{
-    HPLUSleepData *model = [[HPLUSleepData alloc] initWithDateTime:dateTime SleepDate:sleepDate SecondSleepDate:secondSleepDate DeepSleepDate:deepSleepDate ShallowSleepDate:shallowSleepDate WakeUpTimes:wakeUpTimes WakeUpDate:wakeUpDate StartDate:startDate];
++ (HPLUSleepDataModel *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate{
+    HPLUSleepDataModel *model = [[HPLUSleepDataModel alloc] initWithDateTime:dateTime SleepDate:sleepDate SecondSleepDate:secondSleepDate DeepSleepDate:deepSleepDate ShallowSleepDate:shallowSleepDate WakeUpTimes:wakeUpTimes WakeUpDate:wakeUpDate StartDate:startDate];
     return model;
 }
-
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.dateTime forKey:@"dateTime"];
+    [aCoder encodeObject:self.sleepDate forKey:@"sleepDate"];
+    [aCoder encodeObject:self.secondSleepDate forKey:@"secondSleepDate"];
+    [aCoder encodeObject:self.deepSleepDate forKey:@"deepSleepDate"];
+    
+    [aCoder encodeObject:self.shallowSleepDate forKey:@"shallowSleepDate"];
+    [aCoder encodeObject:self.wakeUpTimes forKey:@"wakeUpTimes"];
+    [aCoder encodeObject:self.wakeUpDate forKey:@"wakeUpDate"];
+    [aCoder encodeObject:self.startDate forKey:@"startDate"];
+}
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super init]) {
+        self.dateTime = [aDecoder decodeObjectForKey:@"dateTime"];
+        self.sleepDate = [aDecoder decodeObjectForKey:@"sleepDate"];
+        self.secondSleepDate = [aDecoder decodeObjectForKey:@"secondSleepDate"];
+        self.deepSleepDate = [aDecoder decodeObjectForKey:@"deepSleepDate"];
+        self.shallowSleepDate = [aDecoder decodeObjectForKey:@"shallowSleepDate"];
+        
+        self.wakeUpTimes = [aDecoder decodeObjectForKey:@"wakeUpTimes"];
+        self.wakeUpDate = [aDecoder decodeObjectForKey:@"wakeUpDate"];
+        self.startDate = [aDecoder decodeObjectForKey:@"startDate"];
+    }
+    return self;
+}
 @end
 
 
-@implementation RealRunData
+@implementation RealRunDataModel
 
-- (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate{
+- (RealRunDataModel *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate{
     if (self = [super init]) {
         _realStep = realStep;
         _realDistance = realDistance;
@@ -90,13 +138,61 @@
     return self;
     
 }
-+ (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate{
-    RealRunData *model = [[RealRunData alloc] initWithRealStep:realStep RealDistance:realDistance RealCalories:realCalories StaticCalories:staticCalories Battery:battery HeartRate:heartRate];
++ (RealRunDataModel *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate{
+    RealRunDataModel *model = [[RealRunDataModel alloc] initWithRealStep:realStep RealDistance:realDistance RealCalories:realCalories StaticCalories:staticCalories Battery:battery HeartRate:heartRate];
     return model;
 }
 
 @end
 
+
+@implementation HPlusExerciseDataModel
+
+- (HPlusExerciseDataModel *)initWithDates:(NSString *)dates Weeks:(NSInteger )weeks DataTypes:(NSInteger)dataTypes Steps:(NSString *)steps Distances:(NSString *)distances Calories:(NSString *)calories CircleTimes:(float)circleTimes ExerciseDurations:(NSString *)exerciseDurations{
+    if (self = [super init]) {
+        _dates = dates;
+        _weeks = weeks;
+        _dataTypes = dataTypes;
+        _steps = steps;
+        _distances = distances;
+        _calories = calories;
+        _circleTimes = circleTimes;
+        _exerciseDurations = exerciseDurations;
+    }
+    return self;
+}
+
++ (HPlusExerciseDataModel *)initWithDates:(NSString *)dates Weeks:(NSInteger)weeks DataTypes:(NSInteger)dataTypes Steps:(NSString *)steps Distances:(NSString *)distances Calories:(NSString *)calories CircleTimes:(float)circleTimes ExerciseDurations:(NSString *)exerciseDurations{
+    HPlusExerciseDataModel *model = [[HPlusExerciseDataModel alloc] initWithDates:dates Weeks:weeks DataTypes:dataTypes Steps:steps Distances:distances Calories:calories CircleTimes:circleTimes ExerciseDurations:exerciseDurations];
+    return model;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.dates forKey:@"dates"];
+    [aCoder encodeInteger:self.weeks forKey:@"weeks"];
+    [aCoder encodeInteger:self.dataTypes forKey:@"dataTypes"];
+    [aCoder encodeObject:self.steps forKey:@"dataTypes"];
+    
+    [aCoder encodeObject:self.distances forKey:@"distances"];
+    [aCoder encodeObject:self.calories forKey:@"calories"];
+    [aCoder encodeFloat:self.circleTimes forKey:@"circleTimes"];
+    [aCoder encodeObject:self.exerciseDurations forKey:@"exerciseDurations"];
+}
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super init]) {
+        self.dates = [aDecoder decodeObjectForKey:@"dates"];
+        self.weeks = [aDecoder decodeIntegerForKey:@"weeks"];
+        self.dataTypes = [aDecoder decodeIntegerForKey:@"dataTypes"];
+        self.steps = [aDecoder decodeObjectForKey:@"steps"];
+        self.distances = [aDecoder decodeObjectForKey:@"distances"];
+
+        self.calories = [aDecoder decodeObjectForKey:@"calories"];
+        self.circleTimes = [aDecoder decodeFloatForKey:@"circleTimes"];
+        self.exerciseDurations = [aDecoder decodeObjectForKey:@"exerciseDurations"];
+    }
+    return self;
+}
+@end
 
 // 设备名
 #define DEVICENAME @"HPLUS"
@@ -121,7 +217,7 @@
  */
 #define CHARACTERISTIC_SERVICE_UUID_NOTIFY @"14702853-620A-3973-7C78-9CFFF0876ABD"
 
-#define DUMMY_SERVICE_UUID_STRING @"7905F431-B5CE-4E99-A40F-4B1E122D00D0"
+//#define DUMMY_SERVICE_UUID_STRING @"7905F431-B5CE-4E99-A40F-4B1E122D00D0"
 /*
  7905F431-B5CE-4E99-A40F-4B1E122D00D0
  Characteristic类型
@@ -160,6 +256,29 @@
 @property (strong, nonatomic) NSTimer *connectTimer;
 //搜索超时定时器 60s
 @property (strong, nonatomic) NSTimer *searchTimer;
+
+/*!
+ *  @brief  返回连接设备的name
+ *
+ */
+
+@property (copy, nonatomic) void(^HPLUSManagerTitleBlock)(NSString *);
+/*!
+ *  @brief  返回CBPeripheral对象数组的长度
+ *
+ */
+@property (copy, nonatomic) void(^HPLUSManagerDevicesBlock)(NSMutableArray *);
+/*!
+ *  @brief  返回实时数据的model
+ *
+ */
+@property (copy, nonatomic) void(^HPLUSManagerRealDataBlock)(RealRunDataModel *);
+
+@property (copy, nonatomic) void(^HPLUSManagerRunDataBlock)(HPLUSRunDataModel *);
+
+@property (copy, nonatomic) void(^HPLUSManagerSleepDataBlock)(HPLUSleepDataModel *);
+
+@property (copy, nonatomic) void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *);
 
 @end
 static HPLUSManager *manager = nil;
@@ -345,28 +464,57 @@ static HPLUSManager *manager = nil;
         [self actionWriteWithData:[self dataWithHexstring:powerOffStr]];
     }
 }
-- (HPLUSRunData *)getRunDataCommand{
-    NSString *runDataStr = [self ToHex:(long long)HPLUSBluetoothCommandRunData];
-    if (self.myPeripheral && self.writeCharacter) {
-        [self actionWriteWithData:[self dataWithHexstring:runDataStr]];
+
+- (void)setRunDataCommand:(NSInteger)runtype SleepDataCommand:(NSInteger)sleeptype ExerciseDataCommand:(NSInteger)exercisetype{
+    while (runtype == 1) {
+        NSLog(@"执行了");
+        NSString *runDataStr = [self ToHex:(long long)HPLUSBluetoothCommandRunData];
+        if (self.myPeripheral && self.writeCharacter) {
+            [self actionWriteWithData:[self dataWithHexstring:runDataStr]];
+        }
+        break;
     }
     
-    return nil;
-}
-- (HPLUSleepData *)getSleepDataCommand{
-    NSString *sleepDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
-    if (self.myPeripheral && self.writeCharacter) {
-        [self actionWriteWithData:[self dataWithHexstring:sleepDataStr]];
+    while (sleeptype == 1) {
+        NSLog(@"执行了");
+        NSString *sleepDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
+        if (self.myPeripheral && self.writeCharacter) {
+            [self actionWriteWithData:[self dataWithHexstring:sleepDataStr]];
+        }
+        break;
     }
-    return nil;
-}
-- (RealRunData *)getRealRunDataCommand{
-    NSString *realRunDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
-    if (self.myPeripheral && self.writeCharacter) {
-        [self actionWriteWithData:[self dataWithHexstring:realRunDataStr]];
+    
+    while (exercisetype == 1) {
+        NSLog(@"执行了");
+        NSString *exerciseDataStr = [self ToHex:(long long)HPLUSBluetoothCommandExerciseData];
+        if (self.myPeripheral && self.writeCharacter) {
+            [self actionWriteWithData:[self dataWithHexstring:exerciseDataStr]];
+        }
+        break;
     }
-    return nil;
 }
+//- (HPLUSRunDataModel *)getRunDataCommand{
+//    NSString *runDataStr = [self ToHex:(long long)HPLUSBluetoothCommandRunData];
+//    if (self.myPeripheral && self.writeCharacter) {
+//        [self actionWriteWithData:[self dataWithHexstring:runDataStr]];
+//    }
+//    
+//    return nil;
+//}
+//- (HPLUSleepDataModel *)getSleepDataCommand{
+//    NSString *sleepDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
+//    if (self.myPeripheral && self.writeCharacter) {
+//        [self actionWriteWithData:[self dataWithHexstring:sleepDataStr]];
+//    }
+//    return nil;
+//}
+//- (RealRunDataModel *)getRealRunDataCommand{
+//    NSString *realRunDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
+//    if (self.myPeripheral && self.writeCharacter) {
+//        [self actionWriteWithData:[self dataWithHexstring:realRunDataStr]];
+//    }
+//    return nil;
+//}
 
 
 - (void)actionWriteWithData:(NSData *)commandData{
@@ -430,6 +578,8 @@ static HPLUSManager *manager = nil;
             if (self.HPLUSManagerDevicesBlock) {
                 self.HPLUSManagerDevicesBlock(self.devices);
             }
+            
+            
         }else{
             NSLog(@"无系统存储的设备");
             //重连已连接的设备
@@ -690,7 +840,7 @@ static HPLUSManager *manager = nil;
             }
             NSLog(@"run value = %@",characteristic.value);
 
-          HPLUSRunData *model = [HPLUSRunData initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:run[10] Low:run[9]],[self strtoulWithString:run[11]],[self strtoulWithString:run[12]]] Step:[self strtoulWithStringHigh:run[2] Low:run[1]] Distance:[self strtoulWithStringHigh:run[4] Low:run[3]] RunCalories:[self strtoulWithStringHigh:run[6] Low:run[5]] StaticCalories:[self strtoulWithStringHigh:run[8] Low:run[7]] RunTimes:[self strtoulWithStringHigh:run[14] Low:run[13]] MaxHeartRate:[self strtoulWithString:run[15]] MinHeartRate:[self strtoulWithString:run[16]]];
+          HPLUSRunDataModel *model = [HPLUSRunDataModel initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:run[10] Low:run[9]],[self strtoulWithString:run[11]],[self strtoulWithString:run[12]]] Step:[self strtoulWithStringHigh:run[2] Low:run[1]] Distance:[self strtoulWithStringHigh:run[4] Low:run[3]] RunCalories:[self strtoulWithStringHigh:run[6] Low:run[5]] StaticCalories:[self strtoulWithStringHigh:run[8] Low:run[7]] RunTimes:[self strtoulWithStringHigh:run[14] Low:run[13]] MaxHeartRate:[self strtoulWithString:run[15]] MinHeartRate:[self strtoulWithString:run[16]]];
             if (self.HPLUSManagerRunDataBlock) {
                 self.HPLUSManagerRunDataBlock(model);
             }
@@ -705,7 +855,7 @@ static HPLUSManager *manager = nil;
             }
             
             NSLog(@"sleep value = %@",characteristic.value);
-          HPLUSleepData *model = [HPLUSleepData initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:sleep[2] Low:sleep[1]],[self strtoulWithString:sleep[3]],[self strtoulWithString:sleep[4]]] SleepDate:[self strtoulWithStringHigh:sleep[6] Low:sleep[5]] SecondSleepDate:[self strtoulWithStringHigh:sleep[8] Low:sleep[7]] DeepSleepDate:[self strtoulWithStringHigh:sleep[10] Low:sleep[9]] ShallowSleepDate:[self strtoulWithStringHigh:sleep[12] Low:sleep[11]] WakeUpTimes:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[14]],[self strtoulWithString:sleep[13]]] WakeUpDate:[self strtoulWithStringHigh:sleep[16] Low:sleep[15]] StartDate:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[17]],[self strtoulWithString:sleep[18]]]];
+          HPLUSleepDataModel *model = [HPLUSleepDataModel initWithDateTime:[NSString stringWithFormat:@"%@-%@-%@",[self strtoulWithStringHigh:sleep[2] Low:sleep[1]],[self strtoulWithString:sleep[3]],[self strtoulWithString:sleep[4]]] SleepDate:[self strtoulWithStringHigh:sleep[6] Low:sleep[5]] SecondSleepDate:[self strtoulWithStringHigh:sleep[8] Low:sleep[7]] DeepSleepDate:[self strtoulWithStringHigh:sleep[10] Low:sleep[9]] ShallowSleepDate:[self strtoulWithStringHigh:sleep[12] Low:sleep[11]] WakeUpTimes:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[14]],[self strtoulWithString:sleep[13]]] WakeUpDate:[self strtoulWithStringHigh:sleep[16] Low:sleep[15]] StartDate:[NSString stringWithFormat:@"%@:%@",[self strtoulWithString:sleep[17]],[self strtoulWithString:sleep[18]]]];
             if (self.HPLUSManagerSleepDataBlock) {
                 self.HPLUSManagerSleepDataBlock(model);
             }
@@ -718,11 +868,45 @@ static HPLUSManager *manager = nil;
                 return;
             }
             NSLog(@"notify value = %@",characteristic.value);
-          RealRunData *model = [RealRunData initWithRealStep:[self strtoulWithStringHigh:notify[2] Low:notify[1]] RealDistance:[self strtoulWithStringHigh:notify[4] Low:notify[3]] RealCalories:[self strtoulWithStringHigh:notify[6] Low:notify[5]] StaticCalories:[self strtoulWithStringHigh:notify[8] Low:notify[7]] Battery:[NSString stringWithFormat:@"%@%%",[self strtoulWithString:notify[9]]] HeartRate:[self strtoulWithString:notify[11]]];
+          RealRunDataModel *model = [RealRunDataModel initWithRealStep:[self strtoulWithStringHigh:notify[2] Low:notify[1]] RealDistance:[self strtoulWithStringHigh:notify[4] Low:notify[3]] RealCalories:[self strtoulWithStringHigh:notify[6] Low:notify[5]] StaticCalories:[self strtoulWithStringHigh:notify[8] Low:notify[7]] Battery:[NSString stringWithFormat:@"%@%%",[self strtoulWithString:notify[9]]] HeartRate:[self strtoulWithString:notify[11]]];
             //            NSLog(@"notify = %@",notify);
             if (self.HPLUSManagerRealDataBlock) {
                 self.HPLUSManagerRealDataBlock(model);
             }
+        }else if([hexString isEqualToString:[self ToHex:(long long)HPLUSBluetoothSettingExerciseData]]){
+            NSString *exerciseStr = [self hexDatatoString:characteristic.value];
+            NSArray *exercise = [self ArrFromHexString:exerciseStr];
+            if (exercise.count < 20) {
+                NSLog(@"同步数据解析不正确");
+                return;
+            }
+            NSLog(@"exercise value = %@",characteristic.value);
+            
+            
+            NSString *dates = [[[[[[[[[[[self strtoulWithStringHigh:exercise[9] Low:exercise[10]]
+                              stringByAppendingString:@":" ]
+                              stringByAppendingString:[self strtoulWithString:exercise[11]]]
+                              stringByAppendingString:@":" ]
+                              stringByAppendingString:[self strtoulWithString:exercise[12]]]
+                              stringByAppendingString:@":" ]
+                              stringByAppendingString:[self strtoulWithString:exercise[13]]]
+                              stringByAppendingString:@":" ]
+                              stringByAppendingString:[self strtoulWithString:exercise[14]]]
+                              stringByAppendingString:@":" ]
+                              stringByAppendingString:[self strtoulWithString:exercise[15]]];
+            
+            NSString *durations = [[[[[self strtoulWithString:exercise[17]]
+                                   stringByAppendingString:@":" ]
+                                   stringByAppendingString:[self strtoulWithString:exercise[18]]]
+                                   stringByAppendingString:@":" ]
+                                   stringByAppendingString:[self strtoulWithString:exercise[19]]];
+            
+            HPlusExerciseDataModel *model = [HPlusExerciseDataModel initWithDates:dates Weeks:[[self strtoulWithString:exercise[16]] integerValue] DataTypes:[[self strtoulWithString:exercise[8]] integerValue] Steps:[self strtoulWithStringHigh:exercise[1] Low:exercise[2]] Distances:[self strtoulWithStringHigh:exercise[3] Low:exercise[4]] Calories:[self strtoulWithStringHigh:exercise[5] Low:exercise[6]] CircleTimes:[[self strtoulWithString:exercise[7]] floatValue] ExerciseDurations:durations];
+            
+            if (self.HPLUSManagerExerciseDataBlock) {
+                self.HPLUSManagerExerciseDataBlock(model);
+            }
+           
         }else{
             NSLog(@"其他数据读取，暂时不处理%@",hexString);
         }
@@ -1112,6 +1296,32 @@ static HPLUSManager *manager = nil;
         return tempUInteger;
     }
 }
+
+#pragma mark --获取数据
+- (void)GetHPLUSManagerDevices:(HPLUSManagerDevicesBlock)devices{
+    self.HPLUSManagerDevicesBlock = devices;
+    
+}
+- (void)GetHPLUSManagerTitle:(HPLUSManagerTitleBlock)stateTitle{
+    self.HPLUSManagerTitleBlock = stateTitle;
+}
+
+- (void)GetHPLUSManagerRunData:(HPLUSManagerRunDataBlock)runModel{
+    self.HPLUSManagerRunDataBlock = runModel;
+}
+
+- (void)GetHPLUSManagerRealData:(HPLUSManagerRealDataBlock)realModel{
+    self.HPLUSManagerRealDataBlock = realModel;
+}
+
+- (void)GetHPLUSManagerSleepData:(HPLUSManagerSleepDataBlock)sleepModel{
+    self.HPLUSManagerSleepDataBlock = sleepModel;
+}
+
+- (void)GetHPLUSManagerExerciseData:(HPLUSManagerExerciseDataBlock)exerciseModel{
+    self.HPLUSManagerExerciseDataBlock = exerciseModel;
+}
+
 
 #pragma mark --NSCoding
 - (HPLUSConnectModel *)UnarchiverWithkey:(NSString *)key{

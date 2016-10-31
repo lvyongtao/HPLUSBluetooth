@@ -418,15 +418,16 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 }
 - (IBAction)getdata:(id)sender {
 //    if (self.myPeripheral && self.writeCharacter) {
-        [[HPLUSManager ShareManager] getRunDataCommand];
-        [[HPLUSManager ShareManager] getSleepDataCommand];
+    [[HPLUSManager ShareManager] setRunDataCommand:1 SleepDataCommand:1 ExerciseDataCommand:0];
+//        [[HPLUSManager ShareManager] getRunDataCommand];
+//        [[HPLUSManager ShareManager] getSleepDataCommand];
 //    }
 }
 
 - (IBAction)restart:(UIButton *)sender {
     
 //    if (self.myPeripheral && self.writeCharacter) {
-        [[HPLUSManager ShareManager] setReBoot];
+//        [[HPLUSManager ShareManager] setReBoot];
 //    }
 }
 - (IBAction)poweroff:(id)sender {
@@ -440,11 +441,12 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 //    if (self.myPeripheral && self.writeCharacter) {
         sender.selected =! sender.selected;
         if (sender.selected) {
-            [[HPLUSManager ShareManager] setRealHeartRate_Off];
-            self.title = @"心率检测关";
-        }else{
             [[HPLUSManager ShareManager] setRealHeartRate_On];
             self.title = @"心率检测开";
+        }else{
+            [[HPLUSManager ShareManager] setRealHeartRate_Off];
+            self.title = @"心率检测关";
+            
         }
         
 //    }
@@ -466,9 +468,18 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
         }
 //    }
 }
-- (IBAction)sitRemind:(id)sender {
+- (IBAction)sitRemind:(UIButton *)sender {
 //    if (self.myPeripheral && self.writeCharacter) {
-        [[HPLUSManager ShareManager] setSedentaryRemindStartTime:@"09:00" EndTime:@"17:00" TheIntervalTime:1];
+    
+    sender.selected =! sender.selected;
+    if (sender.selected) {
+         [[HPLUSManager ShareManager] setSedentaryRemindStartTime:@"09:00" EndTime:@"17:00" TheIntervalTime:1];
+        self.title = @"开久坐提醒";
+    }else{
+         [[HPLUSManager ShareManager] setSedentaryRemindStartTime:@"09:00" EndTime:@"17:00" TheIntervalTime:0];
+        self.title = @"关久坐提醒";
+    }
+    
 //    }
 }
 
@@ -695,28 +706,68 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
             //断开连接状态
         }
     };
-    //附近的蓝牙设备
-    [HPLUSManager ShareManager].HPLUSManagerDevicesBlock = ^(NSMutableArray *arr){
-        self.devices = arr;
-        NSLog(@"arr = %@",arr);
-        [self.myTableView reloadData];
-    };
-    //实时运动数据
-    [HPLUSManager ShareManager].HPLUSManagerRealDataBlock = ^(RealRunData *model){
-        self.realLable.text = [NSString stringWithFormat:@"realStep = %@,realDistance = %@,realCalories =%@,staticCalories = %@,battery = %@,heartRate= %@",model.realStep,model.realDistance,model.realCalories,model.staticCalories,model.battery,model.heartRate];
-    };
-    //蓝牙状态的打印
-    [HPLUSManager ShareManager].HPLUSManagerTitleBlock = ^(NSString *text){
-        self.msgLable.text = text;
-    };
-    //历史的运动数据
-    [HPLUSManager ShareManager].HPLUSManagerRunDataBlock = ^(HPLUSRunData *model){
+//    //附近的蓝牙设备
+//    [HPLUSManager ShareManager].HPLUSManagerDevicesBlock = ^(NSMutableArray *arr){
+//        self.devices = arr;
+//        NSLog(@"arr = %@",arr);
+//        [self.myTableView reloadData];
+//    };
+//    //实时运动数据
+//    [HPLUSManager ShareManager].HPLUSManagerRealDataBlock = ^(RealRunDataModel *model){
+//        self.realLable.text = [NSString stringWithFormat:@"realStep = %@,realDistance = %@,realCalories =%@,staticCalories = %@,battery = %@,heartRate= %@",model.realStep,model.realDistance,model.realCalories,model.staticCalories,model.battery,model.heartRate];
+//    };
+//    //蓝牙状态的打印
+//    [HPLUSManager ShareManager].HPLUSManagerTitleBlock = ^(NSString *text){
+//        self.msgLable.text = text;
+//    };
+//    //历史的运动数据
+//    [HPLUSManager ShareManager].HPLUSManagerRunDataBlock = ^(HPLUSRunDataModel *model){
+//        
+//        NSLog(@"VIEW CONTROLLER_Run dateTime = %@,step = %@,distance = %@,runCalories = %@,staticCalories = %@,runTimes = %@,maxHeartRate = %@,minHeartRate = %@",model.dateTime,model.step,model.distance,model.runCalories,model.staticCalories,model.runTimes,model.maxHeartRate,model.minHeartRate);
+//    };
+//    //历史的睡眠数据
+//    [HPLUSManager ShareManager].HPLUSManagerSleepDataBlock = ^(HPLUSleepDataModel *model){
+//        NSLog(@"VIEW CONTROLLER_Sleep dateTime = %@,sleepDate = %@,secondSleepDate = %@,deepSleepDate = %@,shallowSleepDate = %@,wakeUpTimes = %@,wakeUpDate = %@,startDate = %@",model.dateTime,model.sleepDate,model.secondSleepDate,model.deepSleepDate,model.shallowSleepDate,model.wakeUpTimes,model.wakeUpDate,model.startDate);
+//    };
+//    
+//    
+//    [HPLUSManager ShareManager].HPLUSManagerExerciseDataBlock = ^(HPlusExerciseDataModel *model){
+//        NSLog(@"VIEW CONTROLLER_Exercise dates = %@,weeks = %ld,dataTypes = %ld,steps = %@,distances = %@,calories = %@,circleTimes = %.f,exerciseDurations = %@",model.dates,model.weeks,model.dataTypes,model.steps,model.distances,model.calories,model.circleTimes,model.exerciseDurations);
+//        
+//    };
+    __weak typeof(self) weakSelf = self;
+    [[HPLUSManager ShareManager] GetHPLUSManagerTitle:^(NSString *title) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.msgLable.text = title;
+
+        });
+    }];
+    
+    [[HPLUSManager ShareManager] GetHPLUSManagerDevices:^(NSMutableArray *arr) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.devices = arr;
+            [weakSelf.myTableView reloadData];
+        });
+    }];
+    
+    [[HPLUSManager ShareManager] GetHPLUSManagerRunData:^(HPLUSRunDataModel *model) {
+        NSLog(@"VIEW CONTROLLER_Run dateTime = %@,step = %@,distance = %@,runCalories = %@,staticCalories = %@,runTimes = %@,maxHeartRate = %@,minHeartRate = %@",model.dateTime,model.step,model.distance,model.runCalories,model.staticCalories,model.runTimes,model.maxHeartRate,model.minHeartRate);
+    }];
+    
+    [[HPLUSManager ShareManager] GetHPLUSManagerSleepData:^(HPLUSleepDataModel *model) {
+        NSLog(@"VIEW CONTROLLER_Sleep dateTime = %@,sleepDate = %@,secondSleepDate = %@,deepSleepDate = %@,shallowSleepDate = %@,wakeUpTimes = %@,wakeUpDate = %@,startDate = %@",model.dateTime,model.sleepDate,model.secondSleepDate,model.deepSleepDate,model.shallowSleepDate,model.wakeUpTimes,model.wakeUpDate,model.startDate);
+    }];
+    
+    [[HPLUSManager ShareManager] GetHPLUSManagerExerciseData:^(HPlusExerciseDataModel *model) {
+       NSLog(@"VIEW CONTROLLER_Exercise dates = %@,weeks = %ld,dataTypes = %ld,steps = %@,distances = %@,calories = %@,circleTimes = %.f,exerciseDurations = %@",model.dates,model.weeks,model.dataTypes,model.steps,model.distances,model.calories,model.circleTimes,model.exerciseDurations);
+    }];
+    
+    [[HPLUSManager ShareManager] GetHPLUSManagerRealData:^(RealRunDataModel *model) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.realLable.text = [NSString stringWithFormat:@"realStep = %@,realDistance = %@,realCalories =%@,staticCalories = %@,battery = %@,heartRate= %@",model.realStep,model.realDistance,model.realCalories,model.staticCalories,model.battery,model.heartRate];
+        });
         
-    };
-    //历史的睡眠数据
-    [HPLUSManager ShareManager].HPLUSManagerSleepDataBlock = ^(HPLUSleepData *model){
-        
-    };
+    }];
     
     
     
