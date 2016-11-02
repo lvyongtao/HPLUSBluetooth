@@ -14,6 +14,7 @@
 #import <CoreTelephony/CTCall.h>
 
 
+
 @interface HPLUSConnectModel :NSObject <NSCoding>
 
 /**
@@ -90,7 +91,7 @@
 
 @property (copy, nonatomic) NSString *realStep;//当前步数
 
-@property (copy, nonatomic) NSString *realDistance;//当前运动里程
+@property (copy, nonatomic) NSString *realDistance;//当前运动里程（10m）
 
 @property (copy, nonatomic) NSString *realCalories;//当前消耗卡路里
 
@@ -226,12 +227,12 @@ typedef void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *model);
  *  @brief  连接外设
  *
  */
-- (void)connectWithPeripheral:(CBPeripheral *)peripheral;
+- (void)connectWithPeripheral:(CBPeripheral *)peripheral Identifier:(NSString *)identifier;
 /*!
  *  @brief  取消连接外设
  *
  */
-- (void)cancleConnectWithPeripheral:(CBPeripheral *)peripheral;
+- (void)cancleConnectWithPeripheral:(CBPeripheral *)peripheral Identifier:(NSString *)identifier;
 /*!
  *  @brief  同步日期和时间
  *

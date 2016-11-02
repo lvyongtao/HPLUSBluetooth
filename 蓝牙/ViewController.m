@@ -453,7 +453,7 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 }
 - (IBAction)screenLightTime:(id)sender {
 //    if (self.myPeripheral && self.writeCharacter) {
-        [[HPLUSManager ShareManager] setScreenLightTime:40];
+        [[HPLUSManager ShareManager] setScreenLightTime:100];
 //    }
 }
 - (IBAction)alarmClock:(UIButton *)sender {
@@ -1554,9 +1554,9 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellid"];
     }
-    CBPeripheral *peripheral = [self.devices objectAtIndex:indexPath.row];
-    cell.textLabel.text = peripheral.name;
-    cell.detailTextLabel.text = [peripheral.RSSI stringValue];
+    HPLUSConnectModel *model = [self.devices objectAtIndex:indexPath.row];
+    cell.textLabel.text = model.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"rssi = %ld",model.rssi] ;
     return cell;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -1564,28 +1564,36 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
-     CBPeripheral *peripheral = [self.devices objectAtIndex:indexPath.row];
-    switch (peripheral.state) {
-        case CBPeripheralStateDisconnected:
-            NSLog(@"CBPeripheralStateDisconnected");
-            [[HPLUSManager ShareManager] connectWithPeripheral:peripheral];
-            [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            break;
-        case CBPeripheralStateConnecting:
-            NSLog(@"CBPeripheralStateConnecting");
-            break;
-        case CBPeripheralStateConnected:
-            NSLog(@"CBPeripheralStateConnected");
-            [[HPLUSManager ShareManager] cancleConnectWithPeripheral:peripheral];
-            [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            break;
-        case CBPeripheralStateDisconnecting:
-            NSLog(@"CBPeripheralStateDisconnecting");
-            break;
-            
-        default:
-            break;
+     HPLUSConnectModel *model = [self.devices objectAtIndex:indexPath.row];
+    
+    if (!model.isConnected) {
+        [[HPLUSManager ShareManager] connectWithPeripheral:nil Identifier:model.identifier];
+        [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }else{
+        [[HPLUSManager ShareManager] cancleConnectWithPeripheral:nil Identifier:model.identifier];
+        [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     }
+//    switch (model.isConnected) {
+//        case CBPeripheralStateDisconnected:
+//            NSLog(@"CBPeripheralStateDisconnected");
+//            [[HPLUSManager ShareManager] connectWithPeripheral:peripheral];
+//            [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//            break;
+//        case CBPeripheralStateConnecting:
+//            NSLog(@"CBPeripheralStateConnecting");
+//            break;
+//        case CBPeripheralStateConnected:
+//            NSLog(@"CBPeripheralStateConnected");
+//            [[HPLUSManager ShareManager] cancleConnectWithPeripheral:peripheral];
+//            [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//            break;
+//        case CBPeripheralStateDisconnecting:
+//            NSLog(@"CBPeripheralStateDisconnecting");
+//            break;
+//            
+//        default:
+//            break;
+//    }
     
 }
 

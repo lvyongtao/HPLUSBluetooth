@@ -16,10 +16,10 @@
 //#import <CoreTelephony/CTCallCenter.h>
 //#import <CoreTelephony/CTCall.h>
 
-//#define CHARA_UUIDSTRING_Step @"FF06"
-//#define CHARA_UUIDSTRING_Battery @"FF0C"
-//#define CHARA_UUIDSTRING_Shake @"2A06"
-//#define CHARA_UUIDSTRING_Device @"FF01"
+#define CHARA_UUIDSTRING_Step @"FF06"
+#define CHARA_UUIDSTRING_Battery @"FF0C"
+#define CHARA_UUIDSTRING_Shake @"2A06"
+#define CHARA_UUIDSTRING_Device @"FF01"
 
 
 //@interface HPLUSConnectModel :NSObject <NSCoding>

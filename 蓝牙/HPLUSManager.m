@@ -599,7 +599,9 @@ static HPLUSManager *manager = nil;
             }
         }
     }
-    
+    if (self.devices.count) {
+        [self.devices removeAllObjects];
+    }
    
      [self.myCentralManager scanForPeripheralsWithServices:nil options:nil];
     
@@ -613,7 +615,7 @@ static HPLUSManager *manager = nil;
             for(CBPeripheral *peripheral in peripheralArray){
                 NSLog(@"Connecting to Peripheral - %@", peripheral);
                 if (peripheral.state == CBPeripheralStateDisconnected) {
-                    [self connectWithPeripheral:peripheral];
+                    [self connectWithPeripheral:peripheral Identifier:nil];
                     self.myPeripheral = peripheral;
                     peripheral.delegate = self;
                 }
@@ -629,7 +631,7 @@ static HPLUSManager *manager = nil;
                 for(CBPeripheral *peripheral in connectedPeripheralArray){
                     NSLog(@"Connecting to Peripheral - %@", peripheral);
                     if (peripheral.state == CBPeripheralStateDisconnected) {
-                       [self connectWithPeripheral:peripheral];
+                       [self connectWithPeripheral:peripheral Identifier:nil];
                         self.myPeripheral = peripheral;
                         peripheral.delegate = self;
                     }
@@ -651,36 +653,49 @@ static HPLUSManager *manager = nil;
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI{
     self.title = @"正在搜索蓝牙设备...";
     //移除相同蓝牙设备的重复搜索
+    
     if ([peripheral.name hasPrefix:DEVICENAME]) {
         if (peripheral.name.length) {
             if (self.devices.count > 0) {
                 if (![self.devices containsObject:peripheral]) {
-                    NSLog(@"查找到设备name = %@, identifier = %@,Data = %@",peripheral.name,peripheral.identifier,advertisementData);
-                    [self.devices addObject:peripheral];
+                    NSLog(@"查找到设备name = %@, identifier = %@,rssi = %@",peripheral.name,peripheral.identifier,RSSI);
+                    HPLUSConnectModel *model = [HPLUSConnectModel new];
+                    model.identifier = [peripheral.identifier UUIDString];
+                    model.rssi = [RSSI integerValue];
+                    model.name = peripheral.name;
+                    [self.devices addObject:model];
                     if (self.HPLUSManagerDevicesBlock) {
                         self.HPLUSManagerDevicesBlock(self.devices);
                     }
                     }
             }else{
-                [self.devices addObject:peripheral];
+                HPLUSConnectModel *model = [HPLUSConnectModel new];
+                model.identifier = [peripheral.identifier UUIDString];
+                model.rssi = [RSSI integerValue];
+                model.name = peripheral.name;
+                [self.devices addObject:model];
                 if (self.HPLUSManagerDevicesBlock) {
                     self.HPLUSManagerDevicesBlock(self.devices);
                 }
-                NSLog(@"查找到设备name = %@, identifier = %@,data = %@",peripheral.name,peripheral.identifier,advertisementData);
+                NSLog(@"查找到设备name = %@, identifier = %@,rssi = %@",peripheral.name,peripheral.identifier,RSSI);
             }
         }
     }
 //    if ([peripheral.name hasPrefix:DEVICENAME]) {
     
 //        if (self.myPeripher al != peripheral) {
-            //            [self connectWithPeripheral:peripheral];
+//                        [self connectWithPeripheral:peripheral];
 //        }
-        //        NSLog(@"查找到设备%@===%@",peripheral.name,advertisementData);
-        
+//        NSLog(@"查找到设备name = %@, identifier = %@,rssi = %@",peripheral.name,peripheral.identifier,RSSI);
+    
 //    }
 }
 
-- (void)connectWithPeripheral:(CBPeripheral *)peripheral{
+- (void)connectWithPeripheral:(CBPeripheral *)peripheral Identifier:(NSString *)identifier{
+    if (identifier.length) {
+        [self retrievePeripheral:identifier];
+        return;
+    }
     self.myPeripheral = peripheral;
     //连接指定的设备
     self.title = @"发现HPLUS手环，开始连接...";
@@ -690,9 +705,19 @@ static HPLUSManager *manager = nil;
     _connectTimer = [NSTimer scheduledTimerWithTimeInterval:ConnectTimeInterval target:self selector:@selector(connectTimeout:) userInfo:self.myPeripheral repeats:NO];
     [self.myCentralManager stopScan];
 }
-- (void)cancleConnectWithPeripheral:(CBPeripheral *)peripheral{
+- (void)cancleConnectWithPeripheral:(CBPeripheral *)peripheral Identifier:(NSString *)identifier{
+    
+    if (peripheral == nil) {
+        if (identifier.length) {
+        NSArray *cbArr = [self.myCentralManager retrievePeripheralsWithIdentifiers:@[identifier]];
+        for (CBPeripheral *cb in cbArr) {
+            peripheral = cb;
+        }
+        }
+    }
     if (peripheral.state == CBPeripheralStateConnected ) {
-        [self cancleConnectWithPeripheral:peripheral];
+        
+        [self cancleConnectWithPeripheral:peripheral Identifier:nil];
     }
 
 }
@@ -722,13 +747,15 @@ static HPLUSManager *manager = nil;
     model.name = peripheral.name;
     model.identifier = peripheral.identifier.UUIDString;
     model.isConnected = YES;
-    model.rssi = [peripheral.RSSI integerValue];
+    
+    model.rssi = [@"- 49" integerValue];
     [self ArchiveWithObject:model Forkey:@"connectPeripheral"];
     NSLog(@"%@",peripheral.identifier.UUIDString);
     NSLog(@"连接成功peripheral.name=%@ ,identifier = %@,peripheral.services＝%@ ",peripheral.name,peripheral,peripheral.services);
     [peripheral setDelegate:self];
     [peripheral discoverServices:nil];
 }
+
 //与蓝牙设备断开连接
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"与蓝牙设备断开连接 %@: %@", [peripheral name], [error localizedDescription]);
@@ -737,7 +764,7 @@ static HPLUSManager *manager = nil;
     model.name = peripheral.name;
     model.identifier = peripheral.identifier.UUIDString;
     model.isConnected = NO;
-    model.rssi = [peripheral.RSSI integerValue];
+    model.rssi = [@"- 49" integerValue];
     [self ArchiveWithObject:model Forkey:@"connectPeripheral"];
     if (self.HPLUSManagerTitleBlock) {
         self.HPLUSManagerTitleBlock(@"null");
