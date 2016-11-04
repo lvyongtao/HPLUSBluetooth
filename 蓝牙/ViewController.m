@@ -17,106 +17,6 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
     return intV;
 }
 
-
-
-//@implementation HPLUSConnectModel
-//
-//- (void)encodeWithCoder:(NSCoder *)aCoder{
-//    [aCoder encodeObject:self.name forKey:@"name"];
-//    [aCoder encodeObject:self.identifier forKey:@"identifier"];
-//    [aCoder encodeBool:self.isConnected forKey:@"isConnected"];
-//    [aCoder encodeInteger:self.rssi forKey:@"rssi"];
-//}
-//- (instancetype)initWithCoder:(NSCoder *)aDecoder{
-//    if (self = [super init]) {
-//        self.name = [aDecoder decodeObjectForKey:@"name"];
-//        self.identifier = [aDecoder decodeObjectForKey:@"identifier"];
-//        self.isConnected = [aDecoder decodeBoolForKey:@"isConnected"];
-//        self.rssi = [aDecoder decodeIntegerForKey:@"rssi"];
-//    }
-//    return self;
-//}
-//
-//@end
-//
-//@implementation HPLUSRunData
-//- (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate{
-//    if (self = [super init]) {
-//        _dateTime = dateTime;
-//        _step = step;
-//        _distance = distance;
-//        _runCalories = runCalories;
-//        _staticCalories = staticCalories;
-//        _runTimes = runTimes;
-//        _maxHeartRate = maxHeartRate;
-//        _minHeartRate = minHeartRate;
-//        NSLog(@"dateTime = %@,step = %@,distance = %@,runCalories = %@,staticCalories = %@,runTimes = %@,maxHeartRate = %@,minHeartRate = %@",dateTime,step,distance,runCalories,staticCalories,runTimes,maxHeartRate,minHeartRate);
-//    }
-//    return self;
-//}
-//+ (HPLUSRunData *)initWithDateTime:(NSString *)dateTime Step:(NSString *)step Distance:(NSString *)distance RunCalories:(NSString *)runCalories StaticCalories:(NSString *)staticCalories RunTimes:(NSString *)runTimes MaxHeartRate:(NSString *)maxHeartRate MinHeartRate:(NSString *)minHeartRate{
-//    HPLUSRunData *model = [[HPLUSRunData alloc] initWithDateTime:dateTime Step:step Distance:distance RunCalories:runCalories StaticCalories:staticCalories RunTimes:runTimes MaxHeartRate:maxHeartRate MinHeartRate:minHeartRate];
-//    return model;
-//}
-//
-//@end
-//
-//
-//@implementation HPLUSleepData
-//
-//- (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate{
-//    if (self = [super init]) {
-//        _dateTime = dateTime;
-//        _sleepDate = sleepDate;
-//        _secondSleepDate = secondSleepDate;
-//        _deepSleepDate = deepSleepDate;
-//        _shallowSleepDate = shallowSleepDate;
-//        _wakeUpTimes = wakeUpTimes;
-//        _wakeUpDate = wakeUpDate;
-//        _startDate = startDate;
-//        NSLog(@"dateTime = %@,sleepDate = %@,secondSleepDate = %@,deepSleepDate = %@,shallowSleepDate = %@,wakeUpTimes = %@,wakeUpDate = %@,startDate = %@",dateTime,sleepDate,secondSleepDate,deepSleepDate,shallowSleepDate,wakeUpTimes,wakeUpDate,startDate);
-//    }
-//    return self;
-//}
-//
-//+ (HPLUSleepData *)initWithDateTime:(NSString *)dateTime SleepDate:(NSString *)sleepDate SecondSleepDate:(NSString *)secondSleepDate DeepSleepDate:(NSString *)deepSleepDate ShallowSleepDate:(NSString *)shallowSleepDate WakeUpTimes:(NSString *)wakeUpTimes WakeUpDate:(NSString *)wakeUpDate StartDate:(NSString *)startDate{
-//    HPLUSleepData *model = [[HPLUSleepData alloc] initWithDateTime:dateTime SleepDate:sleepDate SecondSleepDate:secondSleepDate DeepSleepDate:deepSleepDate ShallowSleepDate:shallowSleepDate WakeUpTimes:wakeUpTimes WakeUpDate:wakeUpDate StartDate:startDate];
-//    return model;
-//}
-//
-//@end
-//
-//
-//@implementation RealRunData
-//
-//- (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate{
-//    if (self = [super init]) {
-//        _realStep = realStep;
-//        _realDistance = realDistance;
-//        _realCalories = realCalories;
-//        _staticCalories = staticCalories;
-//        _battery = battery;
-//        _heartRate = heartRate;
-//        NSLog(@"realStep = %@,realDistance = %@,realCalories =%@,staticCalories = %@,battery = %@,heartRate= %@",realStep,realDistance,realCalories,staticCalories,battery,heartRate);
-//    }
-//    return self;
-//    
-//}
-//+ (RealRunData *)initWithRealStep:(NSString *)realStep RealDistance:(NSString *)realDistance RealCalories:(NSString *)realCalories StaticCalories:(NSString *)staticCalories Battery:(NSString *)battery HeartRate:(NSString *)heartRate{
-//    RealRunData *model = [[RealRunData alloc] initWithRealStep:realStep RealDistance:realDistance RealCalories:realCalories StaticCalories:staticCalories Battery:battery HeartRate:heartRate];
-//    return model;
-//}
-//
-//@end
-
-
-
-
-
-
-
-
-
 @interface ViewController ()<CBCentralManagerDelegate,CBPeripheralDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (strong, nonatomic) CBPeripheral* myPeripheral;
@@ -124,6 +24,7 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 
 //抖动的特征服务
 @property (strong, nonatomic) CBCharacteristic *shakeCharacter;
+
 
 //write read 的特征服务
 @property (strong, nonatomic) CBCharacteristic *writeCharacter;
@@ -180,173 +81,7 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 //#define CHARACTERISTIC_SERVICE_UUID_NOTIFY @"000033F2-0000-1000-8000-00805F9B34FB"
 
 @implementation ViewController
-#pragma mark --写入命令，同步数据
 
-//- (void)setDateAndTime{
-//    NSString *dateString = [self hexStringWithDateString:[self stringFromCurrentDate] WithCommand:0];
-//    NSString *timeString = [self hexStringWithDateString:[self stringFromCurrentDate] WithCommand:1];
-//    NSData *dataDate = [self dataWithHexstring:dateString];
-//    NSData *dateTime = [self dataWithHexstring:timeString];
-////    if (self.myPeripheral && self.writeCharacter) {
-////        [self actionWriteWithData:dataDate];
-////        [self actionWriteWithData:dateTime];
-////    }
-//    if (self.myPeripheral && self.writeMutableCharact) {
-//        self.writeMutableCharact.value = [self dataWithHexstring:[self ToHex:(long long)HPLUSBluetoothCommandDate]];
-//        [self actionWriteWithData:dataDate];
-//        [self actionWriteWithData:dateTime];
-//    }
-//}
-//
-//- (void)setBlueAge:(NSUInteger )age Height:(NSUInteger )height Weight:(NSUInteger )weight Sex:(NSUInteger )sex{
-//    if (age >= 255 || height >= 255 || weight >= 255) {
-//        NSLog(@"年龄,身高,体重参数设置不正确,重新设置");
-//        return;
-//    }
-//    if (sex == 0 || sex == 1) {}else{
-//        NSLog(@"性别参数设置错误,重新设置");
-//        return;
-//    }
-//    NSString *ageStr = [[self ToHex:(long long)HPLUSBluetoothCommandAge] stringByAppendingString:[NSString stringWithFormat:@"%zi",age]];
-//    NSString *heightStr = [[self ToHex:(long long)HPLUSBluetoothCommandHeight] stringByAppendingString:[NSString stringWithFormat:@"%zi",height]];
-//    NSString *weightStr = [[self ToHex:(long long)HPLUSBluetoothCommandWeight] stringByAppendingString:[NSString stringWithFormat:@"%zi",weight]];
-//    NSString *sexStr = [[self ToHex:(long long)HPLUSBluetoothCommandSex] stringByAppendingString:[NSString stringWithFormat:@"%zi",sex]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:ageStr]];
-//        [self actionWriteWithData:[self dataWithHexstring:heightStr]];
-//        [self actionWriteWithData:[self dataWithHexstring:weightStr]];
-//        [self actionWriteWithData:[self dataWithHexstring:sexStr]];
-//    }
-//    
-//    
-//}
-//
-//- (void)setScreenLightTime:(NSUInteger )time{
-//    NSString *timeStr = [[self ToHex:(long long)HPLUSBluetoothCommandScreenTime] stringByAppendingString:[self ToHex:(long long)time]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:timeStr]];
-//    }
-//}
-//- (void)setHeartRate_On{
-//
-//    NSString *heartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingHearRateOn]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:heartRateStr]];
-//    }
-//}
-//- (void)setHeartRate_Off{
-//    NSString *heartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingHearRateOff]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:heartRateStr]];
-//    }
-//}
-//- (void)setRealHeartRate_On{
-//    NSString *realHeartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandRealHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingRealHearRateOn]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:realHeartRateStr]];
-//    }
-//
-//}
-//- (void)setRealHeartRate_Off{
-//    NSString *realHeartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandRealHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingRealHearRateOff]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:realHeartRateStr]];
-//    }
-//
-//}
-//- (void)setSedentaryRemindStartTime:(NSString *)startTime EndTime:(NSString *)endTime{
-//    NSInteger startHours = [self IntegerFromStringTime:startTime TimeTag:0];
-//    NSInteger startMinutes = [self IntegerFromStringTime:startTime TimeTag:1];
-//    
-//    NSInteger endHours = [self IntegerFromStringTime:endTime TimeTag:0];
-//    NSInteger endMinutes = [self IntegerFromStringTime:endTime TimeTag:1];
-//    
-//    
-//    if (startHours == 80 || startMinutes == 80 || endHours == 80 || endMinutes == 80) {
-//        NSLog(@"久坐提醒命令写入不正确");
-//        return;
-//    }
-//    NSString *sedentaryStr = [[[[[self ToHex:(long long)HPLUSBluetoothCommandSedentaryRemind] stringByAppendingString:[self ToHex:(long long)startHours]] stringByAppendingString:[self ToHex:(long long)startMinutes]] stringByAppendingString:[self ToHex:(long long)endHours]] stringByAppendingString:[self ToHex:(long long)endMinutes]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:sedentaryStr]];
-//    }
-//}
-//- (void)setSocialRemindType:(NSUInteger)type{
-//    NSString *socoalStr = [[self ToHex:(long long)HPLUSBluetoothCommandSocialRemind] stringByAppendingString:[self ToHex:(long long)type]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:socoalStr]];
-//    }
-//}
-//
-//- (void)setPhoneRemind{
-//    NSString *phoneStr = [[self ToHex:(long long)HPLUSBluetoothCommandPhoneRemind] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingPhone]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:phoneStr]];
-//    }
-//}
-//- (void)setMessageRemind{
-//    NSString *messageStr = [[self ToHex:(long long)HPLUSBluetoothCommandMessageRemind] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingMessage]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:messageStr]];
-//    }
-//}
-//
-//- (void)setAlarmClockWithTime:(NSString *)time{
-//    NSInteger hours = [self IntegerFromStringTime:time TimeTag:0];
-//    NSInteger minutes = [self IntegerFromStringTime:time TimeTag:1];
-//    if (hours == 80 || minutes == 80) {
-//        NSLog(@"闹钟命令写入不正确");
-//        return;
-//    }
-//    NSString *alarmStr = [[[self ToHex:(long long)HPLUSBluetoothCommandAlarmClock] stringByAppendingString:[self ToHex:(long long)hours]] stringByAppendingString:[self ToHex:(long long)minutes]];;
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:alarmStr]];
-//    }
-//
-//}
-//
-//- (void)setClearAllData{
-//    NSString *clearStr = [[self ToHex:(long long)HPLUSBluetoothCommandClearAllData] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingClear]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:clearStr]];
-//    }
-//}
-//
-//- (void)setReBoot{
-//    NSString *reBootStr = [[self ToHex:(long long)HPLUSBluetoothCommandReboot] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingreBoot]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:reBootStr]];
-//    }
-//    
-//}
-//- (void)setPowerOff{
-//    NSString *powerOffStr = [[self ToHex:(long long)HPLUSBluetoothCommandPowerOff] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingPowerOff]];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:powerOffStr]];
-//    }
-//}
-//- (HPLUSRunData *)getRunDataCommand{
-//    NSString *runDataStr = [self ToHex:(long long)HPLUSBluetoothCommandRunData];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:runDataStr]];
-//    }
-//    
-//    return nil;
-//}
-//- (HPLUSleepData *)getSleepDataCommand{
-//    NSString *sleepDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:sleepDataStr]];
-//    }
-//    return nil;
-//}
-//- (RealRunData *)getRealRunDataCommand{
-//    NSString *realRunDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:realRunDataStr]];
-//    }
-//    return nil;
-//}
 #pragma mark --StoryBoard 触发的命令
 
 
@@ -405,23 +140,23 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 
 - (IBAction)clearalldata:(UIButton *)sender {
     self.title = @"ClearAllData";
-//    if (self.myPeripheral && self.writeCharacter) {
-        [[HPLUSManager ShareManager] setClearAllData];
-//    }
+    [[HPLUSManager ShareManager] setClearAllData];
 }
 
 - (IBAction)syncTime:(id)sender {
-//    if (self.myPeripheral && self.writeCharacter) {
-        [[HPLUSManager ShareManager] setDateAndTime];
-        [[HPLUSManager ShareManager] setBlueAge:23 Height:178 Weight:65 Sex:0];
-//    }
+    
+    [[HPLUSManager ShareManager] setDateAndTime];
+    [[HPLUSManager ShareManager] setBlueAge:23 Height:178 Weight:65 Sex:0];
+//    [[HPLUSManager ShareManager] GetHPLUSManagerHPLUSManagerCommandSucessType:^(HPLUSBluetoothCommand command) {
+//        if (command == HPLUSBluetoothCommandDate) {
+//            [UIView MBAlertViewTimerHiddenWithMsg:@"日期数据成功" With:self.view];
+//            [[HPLUSManager ShareManager] setBlueAge:23 Height:178 Weight:65 Sex:0];
+//        }
+//    }];
+    
 }
 - (IBAction)getdata:(id)sender {
-//    if (self.myPeripheral && self.writeCharacter) {
     [[HPLUSManager ShareManager] setRunDataCommand:1 SleepDataCommand:1 ExerciseDataCommand:0];
-//        [[HPLUSManager ShareManager] getRunDataCommand];
-//        [[HPLUSManager ShareManager] getSleepDataCommand];
-//    }
 }
 
 - (IBAction)restart:(UIButton *)sender {
@@ -431,11 +166,9 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
 //    }
 }
 - (IBAction)poweroff:(id)sender {
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self setPhoneRemind];
-        [[HPLUSManager ShareManager] setMessageRemind];
-//        [self setPowerOff];
-//    }
+
+    [[HPLUSManager ShareManager] setPowerOff];
+
 }
 - (IBAction)heartrate:(UIButton *)sender {
 //    if (self.myPeripheral && self.writeCharacter) {
@@ -759,7 +492,7 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
     }];
     
     [[HPLUSManager ShareManager] GetHPLUSManagerExerciseData:^(HPlusExerciseDataModel *model) {
-       NSLog(@"VIEW CONTROLLER_Exercise dates = %@,weeks = %ld,dataTypes = %ld,steps = %@,distances = %@,calories = %@,circleTimes = %.f,exerciseDurations = %@",model.dates,model.weeks,model.dataTypes,model.steps,model.distances,model.calories,model.circleTimes,model.exerciseDurations);
+       NSLog(@"VIEW CONTROLLER_Exercise dates = %@,weeks = %d,dataTypes = %d,steps = %@,distances = %@,calories = %@,circleTimes = %.f,exerciseDurations = %@",model.dates,model.weeks,model.dataTypes,model.steps,model.distances,model.calories,model.circleTimes,model.exerciseDurations);
     }];
     
     [[HPLUSManager ShareManager] GetHPLUSManagerRealData:^(RealRunDataModel *model) {
@@ -768,7 +501,70 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
         });
         
     }];
-    
+    [[HPLUSManager ShareManager] GetHPLUSManagerHPLUSManagerCommandSucessType:^(HPLUSBluetoothCommand command) {
+        switch (command) {
+            case HPLUSBluetoothCommandPowerOff:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"关机成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandReboot:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"重启成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandClearAllData:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"清除数据成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandSedentaryRemind:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"久坐提醒成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandAlarmClock:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"闹钟成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandMessageRemind:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"短信提醒成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandSocialRemind:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"社交提醒成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandVersion:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"版本成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandRunData:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"运动数据成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandSleepData:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"睡眠数据成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandHearRate:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"全天心率成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandRealHearRate:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"实时心率成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandScreenTime:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"亮屏时间设置成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandSex:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"年龄参数成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandAge:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"重启年龄参数成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandWeight:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"重年龄参数成功成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandHeight:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"重年龄参数成功成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandDate:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"日期成功" With:self.view];
+                break;
+            case HPLUSBluetoothCommandTime:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"日期成功" With:self.view];
+                break;
+            default:
+                [UIView MBAlertViewTimerHiddenWithMsg:@"未知命令成功" With:self.view];
+                break;
+        }
+    }];
     
     
 //    [[HPLUSManager ShareManager] addObserver:self forKeyPath:@"devices" options:NSKeyValueObservingOptionNew context:nil];
@@ -1556,7 +1352,7 @@ unsigned int  TCcbytesValueToInt(Byte *bytesValue) {
     }
     HPLUSConnectModel *model = [self.devices objectAtIndex:indexPath.row];
     cell.textLabel.text = model.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"rssi = %ld",model.rssi] ;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"rssi = %i",model.rssi] ;
     return cell;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

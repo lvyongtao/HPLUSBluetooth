@@ -188,6 +188,14 @@ typedef NS_ENUM(NSInteger,HPLUSBluetoothSetting){
     HPLUSBluetoothSettingMessage = 170
     
 };
+
+
+typedef NS_ENUM(NSInteger, ScopeRemindType){
+    ScopeRemindTypeQQ = 1,
+    ScopeRemindTypeWeixin = 2,
+    ScopeRemindTypeFacebook = 3,
+    ScopeRemindTypeTwitter = 4
+};
 #define SearchTimeOutInterval 60.f
 #define ConnectTimeInterval 10.f
 
@@ -201,11 +209,16 @@ typedef void(^HPLUSManagerRunDataBlock)(HPLUSRunDataModel *model);
 typedef void(^HPLUSManagerSleepDataBlock)(HPLUSleepDataModel *model);
 typedef void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *model);
 
+
+typedef void(^HPLUSManagerCommandSucessType)(HPLUSBluetoothCommand command);
+
 @interface HPLUSManager : NSObject
 
 @property (readwrite,copy, nonatomic) NSString *title;
 
 @property (readwrite,strong, nonatomic) NSMutableArray *devices;
+
+@property (assign, nonatomic) HPLUSBluetoothCommand commandtype;
 
 
 + (HPLUSManager *)ShareManager;
@@ -308,7 +321,7 @@ typedef void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *model);
  *
  *  @param Type Scope: 1->QQ ;2->微信;3->Facebook; 4->Twitter
  */
-- (void)setSocialRemindType:(NSUInteger )type;
+- (void)setSocialRemindType:(ScopeRemindType )type;
 
 /*!
  *  @brief  设置电话提醒
@@ -360,6 +373,8 @@ typedef void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *model);
 - (void)GetHPLUSManagerSleepData:(HPLUSManagerSleepDataBlock )sleepModel;//睡眠数据的model
 
 - (void)GetHPLUSManagerExerciseData:(HPLUSManagerExerciseDataBlock )exerciseModel;//锻炼数据的model
+
+- (void)GetHPLUSManagerHPLUSManagerCommandSucessType:(HPLUSManagerCommandSucessType )commandType;
 
 
 ///*!

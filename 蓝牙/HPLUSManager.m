@@ -257,6 +257,7 @@
 //搜索超时定时器 60s
 @property (strong, nonatomic) NSTimer *searchTimer;
 
+
 /*!
  *  @brief  返回连接设备的name
  *
@@ -279,6 +280,8 @@
 @property (copy, nonatomic) void(^HPLUSManagerSleepDataBlock)(HPLUSleepDataModel *);
 
 @property (copy, nonatomic) void(^HPLUSManagerExerciseDataBlock)(HPlusExerciseDataModel *);
+
+@property (copy, nonatomic) void(^HPLUSManagerCommandSucessType)(HPLUSBluetoothCommand);
 
 @end
 static HPLUSManager *manager = nil;
@@ -336,7 +339,9 @@ static HPLUSManager *manager = nil;
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:dataDate];
         [self actionWriteWithData:dateTime];
+        self.commandtype = HPLUSBluetoothCommandDate;
     }
+    
 }
 
 - (void)setBlueAge:(NSUInteger )age Height:(NSUInteger )height Weight:(NSUInteger )weight Sex:(NSUInteger )sex{
@@ -357,39 +362,52 @@ static HPLUSManager *manager = nil;
         [self actionWriteWithData:[self dataWithHexstring:heightStr]];
         [self actionWriteWithData:[self dataWithHexstring:weightStr]];
         [self actionWriteWithData:[self dataWithHexstring:sexStr]];
+        self.commandtype = HPLUSBluetoothCommandAge;
     }
+    
 }
 
 - (void)setScreenLightTime:(NSUInteger )time{
     NSString *timeStr = [[self ToHex:(long long)HPLUSBluetoothCommandScreenTime] stringByAppendingString:[self ToHex:(long long)time]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:timeStr]];
+        self.commandtype = HPLUSBluetoothCommandScreenTime;
     }
+    
 }
 - (void)setHeartRate_On{
     
     NSString *heartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingHearRateOn]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:heartRateStr]];
+        self.commandtype = HPLUSBluetoothCommandHearRate;
     }
+    
 }
 - (void)setHeartRate_Off{
     NSString *heartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingHearRateOff]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:heartRateStr]];
+        self.commandtype = HPLUSBluetoothCommandHearRate;
     }
+    
 }
 - (void)setRealHeartRate_On{
     NSString *realHeartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandRealHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingRealHearRateOn]];
     if (self.myPeripheral && self.writeCharacter) {
+        self.commandtype = HPLUSBluetoothCommandRealHearRate;
+        NSLog(@"write thread = %@",[NSThread currentThread]);
         [self actionWriteWithData:[self dataWithHexstring:realHeartRateStr]];
+        
     }
     
 }
 - (void)setRealHeartRate_Off{
     NSString *realHeartRateStr = [[self ToHex:(long long)HPLUSBluetoothCommandRealHearRate] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingRealHearRateOff]];
     if (self.myPeripheral && self.writeCharacter) {
+        self.commandtype = HPLUSBluetoothCommandRealHearRate;
         [self actionWriteWithData:[self dataWithHexstring:realHeartRateStr]];
+        
     }
     
 }
@@ -408,26 +426,34 @@ static HPLUSManager *manager = nil;
     NSString *sedentaryStr = [[[[[[self ToHex:(long long)HPLUSBluetoothCommandSedentaryRemind]stringByAppendingString:[self ToHex:(long long)intervalTime] ] stringByAppendingString:[self ToHex:(long long)startHours]] stringByAppendingString:[self ToHex:(long long)startMinutes]] stringByAppendingString:[self ToHex:(long long)endHours]] stringByAppendingString:[self ToHex:(long long)endMinutes]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:sedentaryStr]];
+        self.commandtype = HPLUSBluetoothCommandSedentaryRemind;
     }
+    
 }
-- (void)setSocialRemindType:(NSUInteger)type{
+- (void)setSocialRemindType:(ScopeRemindType )type{
     NSString *socoalStr = [[self ToHex:(long long)HPLUSBluetoothCommandSocialRemind] stringByAppendingString:[self ToHex:(long long)type]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:socoalStr]];
+        self.commandtype = HPLUSBluetoothCommandSocialRemind;
     }
+    
 }
 
 - (void)setPhoneRemind{
     NSString *phoneStr = [[self ToHex:(long long)HPLUSBluetoothCommandPhoneRemind] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingPhone]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:phoneStr]];
+        self.commandtype = HPLUSBluetoothCommandPhoneRemind;
     }
+    
 }
 - (void)setMessageRemind{
     NSString *messageStr = [[self ToHex:(long long)HPLUSBluetoothCommandMessageRemind] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingMessage]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:messageStr]];
+        self.commandtype = HPLUSBluetoothCommandMessageRemind;
     }
+    
 }
 
 - (void)setAlarmClockWithTime:(NSString *)time{
@@ -440,6 +466,7 @@ static HPLUSManager *manager = nil;
     NSString *alarmStr = [[[self ToHex:(long long)HPLUSBluetoothCommandAlarmClock] stringByAppendingString:[self ToHex:(long long)hours]] stringByAppendingString:[self ToHex:(long long)minutes]];;
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:alarmStr]];
+        self.commandtype = HPLUSBluetoothCommandAlarmClock;
     }
     
 }
@@ -448,13 +475,16 @@ static HPLUSManager *manager = nil;
     NSString *clearStr = [[self ToHex:(long long)HPLUSBluetoothCommandClearAllData] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingClear]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:clearStr]];
+        self.commandtype = HPLUSBluetoothCommandClearAllData;
     }
+    
 }
 
 - (void)setReBoot{
     NSString *reBootStr = [[self ToHex:(long long)HPLUSBluetoothCommandReboot] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingreBoot]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:reBootStr]];
+        self.commandtype = HPLUSBluetoothCommandReboot;
     }
     
 }
@@ -462,7 +492,9 @@ static HPLUSManager *manager = nil;
     NSString *powerOffStr = [[self ToHex:(long long)HPLUSBluetoothCommandPowerOff] stringByAppendingString:[self ToHex:(long long)HPLUSBluetoothSettingPowerOff]];
     if (self.myPeripheral && self.writeCharacter) {
         [self actionWriteWithData:[self dataWithHexstring:powerOffStr]];
+        self.commandtype = HPLUSBluetoothCommandPowerOff;
     }
+    
 }
 
 - (void)setRunDataCommand:(NSInteger)runtype SleepDataCommand:(NSInteger)sleeptype ExerciseDataCommand:(NSInteger)exercisetype{
@@ -471,7 +503,9 @@ static HPLUSManager *manager = nil;
         NSString *runDataStr = [self ToHex:(long long)HPLUSBluetoothCommandRunData];
         if (self.myPeripheral && self.writeCharacter) {
             [self actionWriteWithData:[self dataWithHexstring:runDataStr]];
+            self.commandtype = HPLUSBluetoothCommandRunData;
         }
+        
         break;
     }
     
@@ -480,7 +514,9 @@ static HPLUSManager *manager = nil;
         NSString *sleepDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
         if (self.myPeripheral && self.writeCharacter) {
             [self actionWriteWithData:[self dataWithHexstring:sleepDataStr]];
+            self.commandtype = HPLUSBluetoothCommandSleepData;
         }
+        
         break;
     }
     
@@ -489,34 +525,13 @@ static HPLUSManager *manager = nil;
         NSString *exerciseDataStr = [self ToHex:(long long)HPLUSBluetoothCommandExerciseData];
         if (self.myPeripheral && self.writeCharacter) {
             [self actionWriteWithData:[self dataWithHexstring:exerciseDataStr]];
+            self.commandtype = HPLUSBluetoothCommandExerciseData;
         }
         break;
     }
+    
 }
-//- (HPLUSRunDataModel *)getRunDataCommand{
-//    NSString *runDataStr = [self ToHex:(long long)HPLUSBluetoothCommandRunData];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:runDataStr]];
-//    }
-//    
-//    return nil;
-//}
-//- (HPLUSleepDataModel *)getSleepDataCommand{
-//    NSString *sleepDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:sleepDataStr]];
-//    }
-//    return nil;
-//}
-//- (RealRunDataModel *)getRealRunDataCommand{
-//    NSString *realRunDataStr = [self ToHex:(long long)HPLUSBluetoothCommandSleepData];
-//    if (self.myPeripheral && self.writeCharacter) {
-//        [self actionWriteWithData:[self dataWithHexstring:realRunDataStr]];
-//    }
-//    return nil;
-//}
-
-
+#pragma mark --写入命令
 - (void)actionWriteWithData:(NSData *)commandData{
     [self.myPeripheral writeValue:commandData forCharacteristic:self.writeCharacter type:CBCharacteristicWriteWithResponse];
 }
@@ -894,7 +909,7 @@ static HPLUSManager *manager = nil;
                 NSLog(@"同步数据解析不正确");
                 return;
             }
-            NSLog(@"notify value = %@",characteristic.value);
+//            NSLog(@"notify value = %@",characteristic.value);
           RealRunDataModel *model = [RealRunDataModel initWithRealStep:[self strtoulWithStringHigh:notify[2] Low:notify[1]] RealDistance:[self strtoulWithStringHigh:notify[4] Low:notify[3]] RealCalories:[self strtoulWithStringHigh:notify[6] Low:notify[5]] StaticCalories:[self strtoulWithStringHigh:notify[8] Low:notify[7]] Battery:[NSString stringWithFormat:@"%@%%",[self strtoulWithString:notify[9]]] HeartRate:[self strtoulWithString:notify[11]]];
             //            NSLog(@"notify = %@",notify);
             if (self.HPLUSManagerRealDataBlock) {
@@ -907,7 +922,7 @@ static HPLUSManager *manager = nil;
                 NSLog(@"同步数据解析不正确");
                 return;
             }
-            NSLog(@"exercise value = %@",characteristic.value);
+//            NSLog(@"exercise value = %@",characteristic.value);
             
             
             NSString *dates = [[[[[[[[[[[self strtoulWithStringHigh:exercise[9] Low:exercise[10]]
@@ -1005,18 +1020,24 @@ static HPLUSManager *manager = nil;
 #pragma mark --写入成功或者失败
 //向蓝牙中写入数据后的回调函数
 - (void)peripheral:(CBPeripheral*)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
+    
     NSLog(@"向peripheral中写入数据后的回调函数");
     if (error) {
         NSLog(@"%@",error.userInfo);
         return;
     }
-    NSString *hexString = [self hexDatatoString:characteristic.value];
-    hexString = [[hexString substringToIndex:2] uppercaseString];
+//    NSString *hexString = [self hexDatatoString:characteristic.value];
+//    hexString = [[hexString substringToIndex:2] uppercaseString];
     
-    NSLog(@"chara = %@,发送数据成功= %d",characteristic,[self IntFromHexString:hexString]);
+//    NSLog(@"chara = %@,发送数据成功= %d",characteristic,[self IntFromHexString:hexString]);
     
     //    NSLog(@"write value success : %@", hexString);
-    switch ([self IntFromHexString:hexString]) {
+    NSLog(@" read thread = %@",[NSThread currentThread]);
+    NSLog(@"command = %i",self.commandtype);
+    if (self.HPLUSManagerCommandSucessType) {
+        self.HPLUSManagerCommandSucessType(self.commandtype);
+    }
+    switch (self.commandtype) {
         case HPLUSBluetoothCommandPowerOff:
             NSLog(@"HPLUSBluetoothCommandPowerOff");
             break;
@@ -1049,6 +1070,9 @@ static HPLUSManager *manager = nil;
             break;
         case HPLUSBluetoothCommandHearRate:
             NSLog(@"HPLUSBluetoothCommandHearRate");
+            break;
+        case HPLUSBluetoothCommandRealHearRate:
+            NSLog(@"HPLUSBluetoothCommandRealHearRate");
             break;
         case HPLUSBluetoothCommandScreenTime:
             NSLog(@"HPLUSBluetoothCommandScreenTime");
@@ -1348,7 +1372,9 @@ static HPLUSManager *manager = nil;
 - (void)GetHPLUSManagerExerciseData:(HPLUSManagerExerciseDataBlock)exerciseModel{
     self.HPLUSManagerExerciseDataBlock = exerciseModel;
 }
-
+- (void)GetHPLUSManagerHPLUSManagerCommandSucessType:(HPLUSManagerCommandSucessType)commandtype{
+    self.HPLUSManagerCommandSucessType = commandtype;
+}
 
 #pragma mark --NSCoding
 - (HPLUSConnectModel *)UnarchiverWithkey:(NSString *)key{
